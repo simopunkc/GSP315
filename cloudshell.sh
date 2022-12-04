@@ -11,7 +11,8 @@ export CLOUD_FUNCTION_NAME="memories-thumbnail-generator"
 gsutil mb -l us-east1 gs://$BUCKET_NAME
 gcloud pubsub topics create $TOPIC_NAME
 
-export LASTUSER=$(gcloud projects get-iam-policy $BUCKET_NAME --flatten="bindings[].members" --format='table(bindings.members)' --filter="bindings.members:user:student*" |& tail -1)
+LASTUSER=$(gcloud projects get-iam-policy $PROJECT_ID --flatten="bindings[].members" --format='table(bindings.members)' --filter="bindings.members:user:student*" |& tail -1)
+export LASTUSER=(${LASTUSER//MEMBERS: user:/ })
 
 gcloud projects remove-iam-policy-binding $BUCKET_NAME --member $LASTUSER --role roles/viewer
 
