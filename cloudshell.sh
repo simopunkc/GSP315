@@ -3,12 +3,12 @@
 gcloud config set compute/zone us-east1-b
 
 export PROJECT_ID=$(gcloud info --format='value(config.project)')
-gsutil mb -l us-east1 gs://$PROJECT_ID
 
 export BUCKET_NAME="memories-bucket-93202"
 export TOPIC_NAME="memories-topic-301"
 export CLOUD_FUNCTION_NAME="memories-thumbnail-generator"
 
+gsutil mb -l us-east1 gs://$BUCKET_NAME
 gcloud pubsub topics create $TOPIC_NAME
 
 export LASTUSER=$(gcloud projects get-iam-policy $BUCKET_NAME --flatten="bindings[].members" --format='table(bindings.members)' --filter="bindings.members:user:student*" |& tail -1)
