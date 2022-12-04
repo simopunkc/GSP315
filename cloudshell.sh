@@ -12,9 +12,9 @@ gsutil mb -l us-east1 gs://$BUCKET_NAME
 gcloud pubsub topics create $TOPIC_NAME
 
 LASTUSER=$(gcloud projects get-iam-policy $PROJECT_ID --flatten="bindings[].members" --format='table(bindings.members)' --filter="bindings.members:user:student*" |& tail -1)
-export LASTUSER=(${LASTUSER//MEMBERS: user:/ })
+export LASTUSER=(${LASTUSER//MEMBERS:/ })
 
-gcloud projects remove-iam-policy-binding $BUCKET_NAME --member $LASTUSER --role roles/viewer
+gcloud projects remove-iam-policy-binding $PROJECT_ID --member $LASTUSER --role roles/viewer
 
 cd script-nodejs/
 
